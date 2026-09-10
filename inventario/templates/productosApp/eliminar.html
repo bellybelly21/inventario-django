@@ -4,20 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{titulo}}</title>
+    <title>Eliminar producto</title>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
 </head>
 <body>
+
     <div class="container mt-5">
-        <h2>{{titulo}}</h2>
+        <h2>Eliminar producto</h2>
+        <p>¿Está seguro que desea eliminar <strong>{{producto.nombre}}</strong>?</p>
     </div>
 
     <form method="post" class="container mx-6">
         {% csrf_token %}
         {{ form.as_p  }}
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
         <a href="{% url 'productos' %}" class="btn btn-secondary">Volver</a>
     </form>
+    
 </body>
 </html>
