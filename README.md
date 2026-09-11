@@ -15,9 +15,9 @@ Sistema web minimalista y moderno desarrollado en **Django** y estilizado con **
 ---
 
 ## 🚀 Tecnologías Utilizadas
-- **Backend:** Python, Django 5.x
-- **Frontend:** Bootstrap 5, HTML5, CSS3 (*Instrument Sans*)
-- **Base de Datos:** SQLite / MySQL
+- **Backend:** Python, Django
+- **Frontend:** Bootstrap 5, HTML5, CSS3
+- **Base de Datos:** MySQL
 - **Gestión de Archivos:** Pillow
 
 ---
