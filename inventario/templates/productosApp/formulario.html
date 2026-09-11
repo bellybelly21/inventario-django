@@ -1,23 +1,54 @@
 {% load django_bootstrap5 %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{titulo}}</title>
+    <title>{{ titulo }} - IndustrialStock</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     {% bootstrap_css %}
-    {% bootstrap_javascript %}
+    <style>
+        body { font-family: 'Instrument Sans', sans-serif; background-color: #f3f4f6; color: #111827; }
+        .navbar { border-bottom: 1px solid #e5e7eb; background: #ffffff; }
+        .card-form { border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .btn-dark { background-color: #111827; border-color: #111827; }
+        .btn-dark:hover { background-color: #1f2937; border-color: #1f2937; }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>{{titulo}}</h2>
+
+    <!-- Navbar Industrial unificado -->
+    <nav class="navbar navbar-expand-lg py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase tracking-wider text-dark text-decoration-none" href="{% url 'productos' %}">⚙️ IndustrialStock</a>
+            <div class="navbar-nav ms-auto">
+                <a class="btn btn-outline-dark btn-sm px-3 py-2" href="{% url 'productos' %}">← Volver al Inventario</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido del Formulario -->
+    <div class="container my-5" style="max-width: 650px;">
+        <div class="card card-form bg-white rounded-4 p-4 p-md-5">
+            <div class="mb-4">
+                <h2 class="h3 fw-bold text-dark mb-1">{{ titulo }}</h2>
+                <p class="text-muted small">Complete los campos correspondientes del componente industrial.</p>
+            </div>
+
+            <!-- Importante: enctype="multipart/form-data" para permitir la subida de fotos -->
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                
+                {% bootstrap_form form %}
+
+                <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                    <a href="{% url 'productos' %}" class="btn btn-outline-secondary px-4">Cancelar</a>
+                    <button type="submit" class="btn btn-dark px-4">Guardar Componente</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <form method="post" class="container mx-6">
-        {% csrf_token %}
-        {{ form.as_p  }}
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{% url 'productos' %}" class="btn btn-secondary">Volver</a>
-    </form>
+    {% bootstrap_javascript %}
 </body>
 </html>

@@ -1,26 +1,49 @@
 {% load django_bootstrap5 %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliminar producto</title>
+    <title>Eliminar Componente - IndustrialStock</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     {% bootstrap_css %}
-    {% bootstrap_javascript %}
+    <style>
+        body { font-family: 'Instrument Sans', sans-serif; background-color: #f3f4f6; color: #111827; }
+        .navbar { border-bottom: 1px solid #e5e7eb; background: #ffffff; }
+        .card-delete { border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border-top: 4px solid #dc3545; }
+    </style>
 </head>
 <body>
 
-    <div class="container mt-5">
-        <h2>Eliminar producto</h2>
-        <p>¿Está seguro que desea eliminar <strong>{{producto.nombre}}</strong>?</p>
+    <!-- Navbar Industrial unificado -->
+    <nav class="navbar navbar-expand-lg py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase tracking-wider text-dark text-decoration-none" href="{% url 'productos' %}">⚙️ IndustrialStock</a>
+            <div class="navbar-nav ms-auto">
+                <a class="btn btn-outline-dark btn-sm px-3 py-2" href="{% url 'productos' %}">← Volver al Inventario</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido de Confirmación -->
+    <div class="container my-5" style="max-width: 550px;">
+        <div class="card card-delete bg-white rounded-4 p-4 p-md-5 text-center">
+            <div class="mb-3">
+                <span class="fs-1">⚠️</span>
+            </div>
+            <h2 class="h3 fw-bold text-dark mb-2">¿Eliminar componente?</h2>
+            <p class="text-muted mb-4">
+                Estás a punto de eliminar permanentemente el registro de <strong class="text-dark">{{ producto.nombre }}</strong> del inventario industrial. Esta acción no se puede deshacer.
+            </p>
+
+            <form method="post" class="d-flex justify-content-center gap-3">
+                {% csrf_token %}
+                <a href="{% url 'productos' %}" class="btn btn-outline-secondary px-4">Cancelar</a>
+                <button type="submit" class="btn btn-danger px-4">Sí, eliminar</button>
+            </form>
+        </div>
     </div>
 
-    <form method="post" class="container mx-6">
-        {% csrf_token %}
-        {{ form.as_p  }}
-        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
-        <a href="{% url 'productos' %}" class="btn btn-secondary">Volver</a>
-    </form>
-    
+    {% bootstrap_javascript %}
 </body>
 </html>

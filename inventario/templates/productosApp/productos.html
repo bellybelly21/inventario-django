@@ -1,57 +1,76 @@
-{% load django_bootstrap5 %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos</title>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-
+    <title>Inventario Industrial - Catálogo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Instrument Sans', sans-serif; background-color: #f3f4f6; color: #111827; }
+        .navbar { border-bottom: 1px solid #e5e7eb; background: #ffffff; }
+        .card { border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); }
+        .product-img { width: 100%; height: 180px; object-fit: cover; background-color: #e5e7eb; }
+        .btn-dark { background-color: #111827; border-color: #111827; }
+        .btn-dark:hover { background-color: #1f2937; }
+    </style>
 </head>
 <body>
 
-    <div class="container mt-5">
-        
-        <div class="d-flex flex-row justify-content-between align-items-center my-3">
-        <h2>Listado de productos</h2>
-        <a href="{% url 'agregar_producto' %}" class="btn btn-primary my-3">Agregar producto</a>
+    <!-- Navbar Industrial -->
+    <nav class="navbar navbar-expand-lg py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase tracking-wider" href="{% url 'productos' %}">⚙️ IndustrialStock</a>
+            <div class="navbar-nav ms-auto">
+                <a class="btn btn-dark btn-sm px-3 py-2 text-white" href="{% url 'agregar_producto' %}">+ Nuevo Componente</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido -->
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 fw-bold mb-1">Inventario de Componentes</h1>
+                <p class="text-muted small mb-0">Gestión de piezas, maquinaria y repuestos industriales.</p>
+            </div>
         </div>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>NOMBRE</th>
-                    <th>PRECIO</th>
-                    <th>STOCK</th>
-                    <th>CATEGORÍA</th>
-                    <th>ACCIONES</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for producto in productos %}
-                <tr>
-                    <td>
-                        {{producto.id}}
-                    </td>
-
-                    <td>{{producto.nombre}}</td>
-                    <td>{{producto.precio}}</td>
-                    <td>{{producto.stock}}</td>
-                    <td>{{producto.categoria}}</td>
-                    <td>
-                        <a href="{% url 'editar_producto' producto.id %}" class="btn btn-warning">Editar</a>
-                        <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-danger">Eliminar</a>
-                    </td>
+        <!-- Grid de Productos -->
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for p in productos %}
+            <div class="col">
+                <div class="card h-100 bg-white rounded-3 overflow-hidden">
+                    {% if p.imagen %}
+                        <img src="{{ p.imagen.url }}" class="product-img" alt="{{ p.nombre }}">
+                    {% else %}
+                        <div class="product-img d-flex align-items-center justify-content-center text-muted small">Sin Imagen</div>
+                    {% endif %}
                     
-
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    <div class="card-body d-flex flex-column p-4">
+                        <span class="badge bg-secondary-subtle text-secondary align-self-start mb-2 px-2 py-1 small">{{ p.categoria }}</span>
+                        <h5 class="card-title fw-bold text-dark mb-1">{{ p.nombre }}</h5>
+                        <p class="text-primary fw-bold fs-5 mb-2">${{ p.precio }}</p>
+                        <p class="text-muted small mb-4">Stock disponible: 
+                            <span class="fw-semibold {% if p.stock > 5 %}text-success{% else %}text-danger{% endif %}">{{ p.stock }} un.</span>
+                        </p>
+                        
+                        <div class="mt-auto d-flex gap-2">
+                            <a href="{% url 'editar_producto' p.id %}" class="btn btn-outline-dark btn-sm w-50">Editar</a>
+                            <a href="{% url 'eliminar_producto' p.id %}" class="btn btn-outline-danger btn-sm w-50">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No hay componentes registrados en el inventario industrial.</p>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
